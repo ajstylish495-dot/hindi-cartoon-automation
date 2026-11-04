@@ -1,2 +1,1 @@
-# hindi-cartoon-automation
-Hindi Cartoon YouTube Automation
+main.py
