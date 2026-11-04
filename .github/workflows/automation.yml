@@ -5,12 +5,15 @@ on:
   schedule:
     - cron: '30 4 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   run-cartoon:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -18,5 +21,18 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg espeak-ng
+          pip install pillow
+
       - name: Run Cartoon Script
         run: python main.py
+
+      - name: Save Video
+        uses: actions/upload-artifact@v4
+        with:
+          name: hindi-cartoon-video
+          path: output/
+          if-no-files-found: warn
